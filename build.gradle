@@ -3,6 +3,11 @@ plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.10'
     id 'org.beryx.jlink' version '2.24.1'
+    id "org.unbroken-dome.test-sets" version "4.0.0"
+}
+
+testSets{
+    test
 }
 
 group 'com.application'
@@ -32,21 +37,21 @@ javafx {
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
-def junitVersion = '5.5.1'
-
 dependencies {
 
     // Junit5 dependencies
-    testImplementation  "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
-    testRuntimeOnly     "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
 
     // TestFX dependencies
     testCompileOnly     "org.testfx:testfx-core:4.0.16-alpha"
-    testCompileOnly     "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testCompileOnly     'org.junit.jupiter:junit-jupiter-api:5.5.1'
     testCompileOnly     "org.testfx:testfx-junit5:4.0.16-alpha"
+
 }
 
 tasks.withType(Test){
+    jvmArgs '--enable-preview'
     useJUnitPlatform()
 
     testLogging {
@@ -64,4 +69,15 @@ jlink {
 
 jlinkZip {
     group = 'distribution'
+}
+
+task deleteFiles(type: Delete) {
+    delete fileTree('build/reports/tests') {
+        include '**/*.png'
+    }
+}
+
+
+build{
+    finalizedBy(deleteFiles)
 }
