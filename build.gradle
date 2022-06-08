@@ -8,6 +8,7 @@ plugins {
 
 testSets{
     test
+    integrationTest
 }
 
 group 'com.application'
@@ -40,14 +41,14 @@ javafx {
 dependencies {
 
     // Junit5 dependencies
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
+    testRuntimeOnly     'org.junit.jupiter:junit-jupiter-engine:5.5.1'
+    testImplementation  'org.junit.jupiter:junit-jupiter-api:5.5.1'
+    testCompileOnly     'org.junit.jupiter:junit-jupiter-params:5.5.1'
 
     // TestFX dependencies
     testCompileOnly     "org.testfx:testfx-core:4.0.16-alpha"
     testCompileOnly     'org.junit.jupiter:junit-jupiter-api:5.5.1'
     testCompileOnly     "org.testfx:testfx-junit5:4.0.16-alpha"
-
 }
 
 tasks.withType(Test){
@@ -58,6 +59,7 @@ tasks.withType(Test){
         events("passed", "skipped", "failed")
     }
 }
+
 
 jlink {
     imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")

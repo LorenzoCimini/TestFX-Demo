@@ -11,30 +11,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane fx:id="panel" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #B1D4E0;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.controllers.LoggerController">
    <bottom>
-       <SplitPane dividerPositions="0.5" prefHeight="46.0" prefWidth="480.0" style="-fx-background-color: #145DA0;"
-                  BorderPane.alignment="CENTER">
+       <SplitPane dividerPositions="0.5" prefHeight="46.0" prefWidth="480.0" style="-fx-background-color: #145DA0;" BorderPane.alignment="CENTER">
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <Button fx:id="cancelButton" mnemonicParsing="false" prefHeight="25.0"
-                       style="-fx-background-color: #145DA0;" text="Cancel" textFill="WHITE"
-                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                       AnchorPane.topAnchor="0.0"
-                        onAction="#onCancelButtonClicked">
+               <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelButtonClicked" prefHeight="25.0" style="-fx-background-color: #145DA0;" text="Cancel" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                    <font>
-                       <Font size="15.0"/>
+                       <Font size="15.0" />
                    </font>
                </Button>
            </AnchorPane>
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <Button fx:id="confirmButton" layoutX="1.0" layoutY="1.0" mnemonicParsing="false" prefHeight="45.0"
-                       prefWidth="295.0" style="-fx-background-color: #145DA0;"
-                       text="Confirm" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
-                       onAction="#onConfirmButtonClicked">
+               <Button fx:id="confirmButton" layoutX="1.0" layoutY="1.0" mnemonicParsing="false" onAction="#onConfirmButtonClicked" prefHeight="45.0" prefWidth="295.0" style="-fx-background-color: #145DA0;" text="Confirm" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" id="confirmButton">
                    <font>
-                       <Font name="System Bold" size="15.0"/>
+                       <Font name="System Bold" size="15.0" />
                    </font>
                </Button>
            </AnchorPane>
@@ -53,32 +43,32 @@
    <center>
        <VBox style="-fx-alignment: center; " BorderPane.alignment="CENTER">
            <BorderPane.margin>
-               <Insets bottom="50.0" left="100.0" right="100.0" top="25.0"/>
+               <Insets bottom="50.0" left="100.0" right="100.0" top="25.0" />
            </BorderPane.margin>
            <Label fx:id="usernameLabel" text="Username">
               <font>
-                  <Font size="15.0"/>
+                  <Font size="15.0" />
               </font>
               <VBox.margin>
-                  <Insets bottom="5.0"/>
+                  <Insets bottom="5.0" />
               </VBox.margin>
            </Label>
-           <TextField fx:id="usernameInput">
+           <TextField fx:id="usernameInput" promptText="Username's length must be between 4 and 15" style="-fx-prompt-text-fill: transparent;">
               <VBox.margin>
-                  <Insets left="100.0" right="100.0"/>
+                  <Insets left="60.0" right="60.0" />
               </VBox.margin>
            </TextField>
            <Label fx:id="passwordLabel" text="Password">
               <font>
-                  <Font size="15.0"/>
+                  <Font size="15.0" />
               </font>
               <VBox.margin>
-                  <Insets bottom="5.0" top="10.0"/>
+                  <Insets bottom="5.0" top="10.0" />
               </VBox.margin>
            </Label>
-           <PasswordField fx:id="passwordInput">
+           <PasswordField fx:id="passwordInput" promptText="Password must be compliant with the regex" style="-fx-prompt-text-fill: transparent;">
               <VBox.margin>
-                  <Insets left="100.0" right="100.0"/>
+                  <Insets left="60.0" right="60.0" />
               </VBox.margin>
            </PasswordField>
        </VBox>
