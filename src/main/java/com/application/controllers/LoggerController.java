@@ -25,6 +25,10 @@ public class LoggerController {
 
     public Button confirmButton;
 
+    public Label usernameErrorLabel;
+
+    public Label passwordErrorLabel;
+
 
     public void onConfirmButtonClicked(ActionEvent actionEvent) {
         checkPassword(usernameInput.getText(), passwordInput.getText());
@@ -37,31 +41,47 @@ public class LoggerController {
 
 
     private void checkPassword(String username, String password){
-        if(isASuitableUsername(username)){
-            if ((isASuitablePassword(password))){
-                System.out.println("OK");
-            }
-            else
-                passwordInput.setStyle("-fx-prompt-text-fill: red;");
+        if(handleUsernameInput(username) && handlePasswordInput(password)){
+            System.out.println("OK");
         }
-        else
-            usernameInput.setStyle("-fx-prompt-text-fill: red;");
-
     }
 
 
-    private boolean isASuitablePassword(String password) {
-        return isPasswordMatchingWithRegex(password);
+    private boolean handlePasswordInput(String password) {
+        if(isPasswordMatchingWithRegex(password)){
+            if(passwordErrorLabel.isVisible())
+                passwordErrorLabel.setVisible(false);
+            return true;
+        }
+        else{
+            passwordErrorLabel.setVisible(true);
+            return false;
+        }
     }
 
 
+    /**
+     * Checks if the password is minimum eight characters, at least one upper case English letter, one lower case English letter, one number and one special character
+     * @param password that must be checked
+     * @return {@code true}} if the password matches else {@code false}
+     */
     private boolean isPasswordMatchingWithRegex(String password) {
         Matcher m = Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$").matcher(password);
         return m.matches();
     }
 
 
-    private boolean isASuitableUsername(String username) {
-        return username.length() >= 4 && username.length() <= 15;
+    private boolean handleUsernameInput(String username) {
+        if (username.length() >= 4 && username.length() <= 15){
+            if(usernameErrorLabel.isVisible())
+                usernameErrorLabel.setVisible(false);
+            return true;
+        }
+        else {
+            usernameErrorLabel.setVisible(true);
+            return false;
+        }
+
+
     }
 }

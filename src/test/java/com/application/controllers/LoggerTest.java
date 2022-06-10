@@ -3,6 +3,7 @@ package com.application.controllers;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -16,6 +17,8 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 import static org.testfx.api.FxAssert.verifyThat;
+import static org.testfx.api.FxToolkit.registerPrimaryStage;
+import static org.testfx.util.DebugUtils.saveNode;
 import static org.testfx.util.DebugUtils.saveWindow;
 
 import java.io.IOException;
@@ -23,14 +26,28 @@ import java.nio.file.Path;
 
 
 @ExtendWith(ApplicationExtension.class)
-class LoggerTest {
-    private static final String SCREENSHOT_FAILING_TEST_PATH = "build/reports/tests/test";
+public class LoggerTest {
+
+    private static final String SCREENSHOT_FAILING_TEST_PATH = "build/reports/tests/";
+
+
+    @BeforeAll
+    public static void setupSpec() throws Exception {
+        if (Boolean.getBoolean("headless")) {
+            System.setProperty("testfx.robot", "glass");
+            System.setProperty("testfx.headless", "true");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+            System.setProperty("java.awt.headless", "true");
+        }
+        registerPrimaryStage();
+    }
 
 
     @Start
     private void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LoggerController.class.getResource("/com/application/logger.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.show();
     }
@@ -40,7 +57,7 @@ class LoggerTest {
     @DisplayName("Test that the window is visible and has the right dimensions")
     @Test void checksForWindowApparitionCorrectness(FxRobot robot) {
         verifyThat("#panel",
-                ((BorderPane borderPane) -> borderPane.getHeight() == 400 && borderPane.getWidth() == 600 && borderPane.isVisible()));
+                ((BorderPane borderPane) -> borderPane.getHeight() == 280 && borderPane.getWidth() == 450 && borderPane.isVisible()));
 
     }
 
@@ -54,25 +71,42 @@ class LoggerTest {
         verifyThat("#usernameInput", Node::isVisible);
         verifyThat("#passwordLabel", Node::isVisible);
         verifyThat("#passwordInput", Node::isVisible);
-        verifyThat("#passwordInput", (TextField textfield) -> textfield.getStyle().equals("-fx-prompt-text-fill: transparent;"));
-        verifyThat("#usernameInput", (TextField textfield) -> textfield.getStyle().equals("-fx-prompt-text-fill: transparent;"));
+        verifyThat("#passwordErrorLabel", (Label label) -> !label.isVisible());
+        verifyThat("#usernameErrorLabel", (Label label) -> !label.isVisible());
     }
+
 
     @Tag("Functional")
-    @DisplayName("Testing that username label is working properly with correct usernames")
+    @DisplayName("Testing that username input is working properly with correct usernames")
     @ParameterizedTest
     @ValueSource(strings = {"user", "usern", "username", "usernameusernam"})
-    void usernameInputTest(String username, FxRobot robot){
+    void usernameInputTestWithCorrectData(String username, FxRobot robot){
         robot.clickOn(robot.lookup("#usernameInput").queryAs(TextField.class)).write(username);
         robot.clickOn(robot.lookup("#confirmButton").queryButton());
-        verifyThat("#usernameInput", (TextField textfield) -> textfield.getStyle().equals("-fx-prompt-text-fill: transparent;"));
+        verifyThat("#usernameErrorLabel", (Label label) -> !label.isVisible());
     }
 
 
-    /*
-        saveWindow genera una immagine nel caso il test fallisce. Ho creato quindi un task gradle da eseguire alla fine di
-        ogni build per assicurarmi che non siano rimaste immagini provenienti da test falliti precedentemenete.
-     */
+    @Tag("Functional")
+    @DisplayName("Testing that username input is working properly with wrong usernames")
+    @ParameterizedTest
+    @ValueSource(strings = {"", "u", "us", "use", "usernameusername"})
+    void usernameInputTestWithWrongData(String username, FxRobot robot, TestInfo testInfo){
+        robot.clickOn(robot.lookup("#usernameInput").queryAs(TextField.class)).write(username);
+        robot.clickOn(robot.lookup("#confirmButton").queryButton());
+
+        Node usernameInput = robot.lookup("#panel").queryAs(BorderPane.class).lookup("#usernameInput");
+
+        verifyThat(
+                "#usernameErrorLabel",
+                (Label label) -> label.isVisible(),
+                saveNode(
+                        robot.lookup("#panel").queryAs(BorderPane.class).lookup("#usernameInput"),
+                        SCREENSHOT_FAILING_TEST_PATH + "[TEST: usernameInputTestWithWrongData]", 1
+                        ));
+    }
+
+
     @Disabled
     @DisplayName("Failing test that show the screenshot feature ")
     @Test void exampleOfFailingTestWithScreenshot(TestInfo testInfo){

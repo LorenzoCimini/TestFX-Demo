@@ -22,11 +22,6 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-application {
-    mainModule = 'com.application.logger'
-    mainClass = 'com.application.logger.HelloApplication'
-}
-
 java{
     toolchain{
         languageVersion.set(JavaLanguageVersion.of(11))
@@ -41,25 +36,22 @@ javafx {
 dependencies {
 
     // Junit5 dependencies
-    testRuntimeOnly     'org.junit.jupiter:junit-jupiter-engine:5.5.1'
-    testImplementation  'org.junit.jupiter:junit-jupiter-api:5.5.1'
-    testCompileOnly     'org.junit.jupiter:junit-jupiter-params:5.5.1'
+    testImplementation  'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testCompileOnly     'org.junit.jupiter:junit-jupiter-params:5.8.2'
+    testImplementation  'org.junit.jupiter:junit-jupiter:5.8.2'
 
     // TestFX dependencies
     testCompileOnly     "org.testfx:testfx-core:4.0.16-alpha"
-    testCompileOnly     'org.junit.jupiter:junit-jupiter-api:5.5.1'
-    testCompileOnly     "org.testfx:testfx-junit5:4.0.16-alpha"
+    testImplementation  "org.testfx:testfx-junit5:4.0.16-alpha"
+
+    // Headless testing
+    // -PnoHeadless if must be run in head mode
+    testImplementation     "org.testfx:openjfx-monocle:jdk-11+26"
+
+
+
+
 }
-
-tasks.withType(Test){
-    jvmArgs '--enable-preview'
-    useJUnitPlatform()
-
-    testLogging {
-        events("passed", "skipped", "failed")
-    }
-}
-
 
 jlink {
     imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
@@ -79,7 +71,19 @@ task deleteFiles(type: Delete) {
     }
 }
 
+test{
+    dependsOn(deleteFiles)
+    useJUnitPlatform()
 
-build{
-    finalizedBy(deleteFiles)
+    if (!project.hasProperty("noHeadless")) {
+        jvmArgs "-Dheadless=true"
+    }
 }
+
+tasks.withType(Test) {
+    testLogging{
+        events "passed", "skipped", "failed"
+    }
+}
+
+
