@@ -8,7 +8,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -27,7 +26,6 @@ import java.nio.file.Path;
 
 @ExtendWith(ApplicationExtension.class)
 public class LoggerTest {
-
     private static final String SCREENSHOT_FAILING_TEST_PATH = "build/reports/tests/";
 
 
@@ -46,25 +44,25 @@ public class LoggerTest {
 
     @Start
     private void start(Stage stage) throws IOException {
+        LoggerController loggerController = new LoggerController();
         FXMLLoader fxmlLoader = new FXMLLoader(LoggerController.class.getResource("/com/application/logger.fxml"));
+        fxmlLoader.setController(loggerController);
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.show();
     }
 
 
-    @Tag("Initialization")
     @DisplayName("Test that the window is visible and has the right dimensions")
-    @Test void checksForWindowApparitionCorrectness(FxRobot robot) {
+    @Test void checksForWindowApparitionCorrectness() {
         verifyThat("#panel",
                 ((BorderPane borderPane) -> borderPane.getHeight() == 280 && borderPane.getWidth() == 450 && borderPane.isVisible()));
 
     }
 
 
-    @Tag("Initialization")
     @DisplayName("Testing correct initialization of the nodes inside the login window")
-    @Test void initializationTest(FxRobot robot){
+    @Test void initializationTest(){
         verifyThat("#cancelButton", Node::isVisible);
         verifyThat("#confirmButton", Node::isVisible);
         verifyThat("#usernameLabel", Node::isVisible);
@@ -76,7 +74,6 @@ public class LoggerTest {
     }
 
 
-    @Tag("Functional")
     @DisplayName("Testing that username input is working properly with correct usernames")
     @ParameterizedTest
     @ValueSource(strings = {"user", "usern", "username", "usernameusernam"})
@@ -87,15 +84,12 @@ public class LoggerTest {
     }
 
 
-    @Tag("Functional")
     @DisplayName("Testing that username input is working properly with wrong usernames")
     @ParameterizedTest
     @ValueSource(strings = {"", "u", "us", "use", "usernameusername"})
-    void usernameInputTestWithWrongData(String username, FxRobot robot, TestInfo testInfo){
+    void usernameInputTestWithWrongData(String username, FxRobot robot){
         robot.clickOn(robot.lookup("#usernameInput").queryAs(TextField.class)).write(username);
         robot.clickOn(robot.lookup("#confirmButton").queryButton());
-
-        Node usernameInput = robot.lookup("#panel").queryAs(BorderPane.class).lookup("#usernameInput");
 
         verifyThat(
                 "#usernameErrorLabel",
@@ -112,5 +106,4 @@ public class LoggerTest {
     @Test void exampleOfFailingTestWithScreenshot(TestInfo testInfo){
         verifyThat("#cancelButton", Node::isDisabled, saveWindow((() -> Path.of(SCREENSHOT_FAILING_TEST_PATH, testInfo.getDisplayName() + ".png")), ""));
     }
-
 }

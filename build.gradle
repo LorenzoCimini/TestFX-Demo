@@ -46,11 +46,10 @@ dependencies {
 
     // Headless testing
     // -PnoHeadless if must be run in head mode
-    testImplementation     "org.testfx:openjfx-monocle:jdk-11+26"
+    testImplementation   "org.testfx:openjfx-monocle:jdk-11+26"
 
-
-
-
+    // Mockito
+    testImplementation  'org.mockito:mockito-core:4.6.1'
 }
 
 jlink {

@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import model.Database;
+import model.User;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,15 +21,30 @@ public class LoggerController {
 
     public PasswordField passwordInput;
 
+
     public Label passwordLabel;
 
+
     public Button cancelButton;
+
 
     public Button confirmButton;
 
     public Label usernameErrorLabel;
 
     public Label passwordErrorLabel;
+
+    private final Database database;
+
+
+    public LoggerController(Database database){
+        this.database = database;
+    }
+
+
+    public LoggerController(){
+        this.database = Database.getDatabase();
+    }
 
 
     public void onConfirmButtonClicked(ActionEvent actionEvent) {
@@ -42,7 +59,7 @@ public class LoggerController {
 
     private void checkPassword(String username, String password){
         if(handleUsernameInput(username) && handlePasswordInput(password)){
-            System.out.println("OK");
+            database.login(new User(username, password));
         }
     }
 
@@ -63,7 +80,7 @@ public class LoggerController {
     /**
      * Checks if the password is minimum eight characters, at least one upper case English letter, one lower case English letter, one number and one special character
      * @param password that must be checked
-     * @return {@code true}} if the password matches else {@code false}
+     * @return {@code true} if the password matches else {@code false}
      */
     private boolean isPasswordMatchingWithRegex(String password) {
         Matcher m = Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$").matcher(password);

@@ -7,12 +7,11 @@ variables:
 before_script:
   - GRADLE_USER_HOME="$(pwd)/.gradle"
   - export GRADLE_USER_HOME
-  - apt-get update
-  - apt-get install -y libpangoft2-1.0-0
 
 build:
   stage: build
-  script: gradle --build-cache assemble
+  script: 
+    - gradle --build-cache assemble
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
@@ -23,7 +22,10 @@ build:
 test:
   stage: test
   script: 
-    - gradle check
+    - apt-get update
+    - apt-get install -y libpangoft2-1.0-0
+    - gradle test
+    
 
   cache:
     key: "$CI_COMMIT_REF_NAME"
