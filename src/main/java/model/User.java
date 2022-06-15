@@ -17,7 +17,8 @@ public class User {
         }
         if (this == object) return true;
 
-        User user = (User) object;
-        return this.username.equals(user.username) == user.password.equals(this.password);
+        User other = (User) object;
+        return  this.username.equals(other.username) &&
+                this.password.equals(other.password);
     }
 }

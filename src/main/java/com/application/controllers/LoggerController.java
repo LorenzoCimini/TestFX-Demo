@@ -59,7 +59,10 @@ public class LoggerController {
 
     private void checkPassword(String username, String password){
         if(handleUsernameInput(username) && handlePasswordInput(password)){
-            database.login(new User(username, password));
+            if(database.login(new User(username, password)))
+                System.out.print("LOGGED IN");
+            else
+                System.out.print("ACCESS DENIED");
         }
     }
 

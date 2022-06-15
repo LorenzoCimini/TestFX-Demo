@@ -101,6 +101,34 @@ public class LoggerTest {
     }
 
 
+    @DisplayName("Testing that password input is working properly with correct passwords")
+    @ParameterizedTest
+    @ValueSource(strings = {"Lorenzo9@", "Abcdefg1&", "Jdkdfhfj4$"})
+    void passwordInputWithCorrectData(String password, FxRobot robot){
+        robot.clickOn(robot.lookup("#passwordInput").queryAs(TextField.class)).write(password);
+        robot.clickOn(robot.lookup("#confirmButton").queryButton());
+        verifyThat("#passwordErrorLabel", (Label label) -> !label.isVisible());
+    }
+
+
+    @DisplayName("Testing that password input is working properly with wrong password")
+    @ParameterizedTest
+    @ValueSource(strings = {"", "u", "Lorenzo", "Lorenzo9", "lorenzo@"})
+    void passwordInputWithWrongData(String password, FxRobot robot){
+        robot.clickOn(robot.lookup("#usernameInput").queryAs(TextField.class)).write("username");
+        robot.clickOn(robot.lookup("#passwordInput").queryAs(TextField.class)).write(password);
+        robot.clickOn(robot.lookup("#confirmButton").queryButton());
+
+        verifyThat(
+                "#passwordErrorLabel",
+                (Label label) -> label.isVisible(),
+                saveNode(
+                        robot.lookup("#panel").queryAs(BorderPane.class).lookup("#passwordInput"),
+                        SCREENSHOT_FAILING_TEST_PATH + "[TEST: usernameInputTestWithWrongData]", 1
+                ));
+    }
+
+
     @Disabled
     @DisplayName("Failing test that show the screenshot feature ")
     @Test void exampleOfFailingTestWithScreenshot(TestInfo testInfo){

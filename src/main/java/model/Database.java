@@ -9,6 +9,10 @@ public class Database{
 
     private Database(){
         users.add(new User("Lorenzo", "Password9@"));
+        users.add(new User("Username", "Password1#"));
+        users.add(new User("User", "Password3$"));
+        users.add(new User("Pippo", "Password7_"));
+        users.add(new User("Pluto", "Password5%"));
     }
 
 
