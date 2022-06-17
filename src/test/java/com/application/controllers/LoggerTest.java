@@ -14,6 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+import org.testfx.matcher.control.ButtonMatchers;
 
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.api.FxToolkit.registerPrimaryStage;
@@ -61,10 +62,10 @@ public class LoggerTest {
     }
 
 
-    @DisplayName("Testing correct initialization of the nodes inside the login window")
+    @DisplayName("Testing correct initialization of nodes' visibility inside the login window")
     @Test void initializationTest(){
-        verifyThat("#cancelButton", Node::isVisible);
-        verifyThat("#confirmButton", Node::isVisible);
+        verifyThat("#cancelButton",  Node::isVisible);
+        verifyThat("#confirmButton",  Node::isVisible);
         verifyThat("#usernameLabel", Node::isVisible);
         verifyThat("#usernameInput", Node::isVisible);
         verifyThat("#passwordLabel", Node::isVisible);

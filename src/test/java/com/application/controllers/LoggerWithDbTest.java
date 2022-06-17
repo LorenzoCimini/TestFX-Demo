@@ -1,4 +1,5 @@
-import com.application.controllers.LoggerController;
+package com.application.controllers;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -24,6 +25,7 @@ import static org.assertj.core.api.Assertions.*;
 public class LoggerWithDbTest{
 
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
+
     private PrintStream originalOut;
 
 

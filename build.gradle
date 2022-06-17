@@ -3,7 +3,6 @@ plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.10'
     id 'org.beryx.jlink' version '2.24.1'
-    id "org.unbroken-dome.test-sets" version "4.0.0"
 }
 
 
@@ -34,12 +33,6 @@ javafx {
 }
 
 
-testSets{
-    test
-    integrationTest
-}
-
-
 dependencies {
 
     // Junit5 dependencies
@@ -59,7 +52,7 @@ dependencies {
     testImplementation  'org.mockito:mockito-core:4.6.1'
 
     // AssertJ
-    integrationTestImplementation 'org.assertj:assertj-core:3.23.1'
+    testImplementation  'org.assertj:assertj-core:3.23.1'
 
 }
 
@@ -100,7 +93,6 @@ tasks.withType(Test){
 
 test{
     dependsOn(deleteFiles)
-    dependsOn(integrationTest)
 }
 
 
