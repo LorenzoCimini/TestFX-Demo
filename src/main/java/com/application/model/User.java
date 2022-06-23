@@ -1,4 +1,4 @@
-package model;
+package com.application.model;
 
 public class User {
     private final String username;

@@ -1,4 +1,4 @@
-package com.application.controllers;
+package com.application.controller;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -14,7 +14,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
-import org.testfx.matcher.control.ButtonMatchers;
 
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.api.FxToolkit.registerPrimaryStage;
@@ -75,7 +74,7 @@ public class LoggerTest {
     }
 
 
-    @DisplayName("Testing that username input is working properly with correct usernames")
+    @DisplayName("Testing that username error label is not appearing with correct usernames")
     @ParameterizedTest
     @ValueSource(strings = {"user", "usern", "username", "usernameusernam"})
     void usernameInputTestWithCorrectData(String username, FxRobot robot){
@@ -85,7 +84,7 @@ public class LoggerTest {
     }
 
 
-    @DisplayName("Testing that username input is working properly with wrong usernames")
+    @DisplayName("Testing that username error label is appearing with wrong usernames")
     @ParameterizedTest
     @ValueSource(strings = {"", "u", "us", "use", "usernameusername"})
     void usernameInputTestWithWrongData(String username, FxRobot robot){
@@ -101,7 +100,7 @@ public class LoggerTest {
                         ));
     }
 
-
+    @Disabled
     @DisplayName("Testing that password input is working properly with correct passwords")
     @ParameterizedTest
     @ValueSource(strings = {"Lorenzo9@", "Abcdefg1&", "Jdkdfhfj4$"})
@@ -112,6 +111,7 @@ public class LoggerTest {
     }
 
 
+    @Disabled
     @DisplayName("Testing that password input is working properly with wrong password")
     @ParameterizedTest
     @ValueSource(strings = {"", "u", "Lorenzo", "Lorenzo9", "lorenzo@"})
@@ -124,8 +124,9 @@ public class LoggerTest {
                 "#passwordErrorLabel",
                 (Label label) -> label.isVisible(),
                 saveNode(
-                        robot.lookup("#panel").queryAs(BorderPane.class).lookup("#passwordInput"),
-                        SCREENSHOT_FAILING_TEST_PATH + "[TEST: usernameInputTestWithWrongData]", 1
+                        robot.lookup("#passwordInput").queryAs(TextField.class),
+                        SCREENSHOT_FAILING_TEST_PATH + "[TEST: usernameInputTestWithWrongData]",
+                        1
                 ));
     }
 

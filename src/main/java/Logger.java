@@ -1,4 +1,4 @@
-import com.application.controllers.LoggerController;
+import com.application.controller.LoggerController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

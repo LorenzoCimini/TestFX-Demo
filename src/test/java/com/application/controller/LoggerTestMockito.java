@@ -1,11 +1,11 @@
-package com.application.controllers;
+package com.application.controller;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.Database;
-import model.User;
+import com.application.model.Database;
+import com.application.model.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
