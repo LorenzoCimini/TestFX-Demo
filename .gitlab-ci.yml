@@ -1,3 +1,6 @@
+# GitLab CI file
+
+
 image: gradle:7.4.2-jdk11-focal
 
 
